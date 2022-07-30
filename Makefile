@@ -38,6 +38,12 @@ else ifeq ($(CPU),atsamd21)
 	SOURCES += cpuAsm.S
 	SOURCES += sdHwAtsamd21spi.c
 	LKR		= linker_atsamd21.lkr
+else ifeq ($(CPU),opt)
+	CCFLAGS	+= -O3 -fvar-tracking -Wall -Wextra -Werror -D"err_str(...)=fprintf(stderr, __VA_ARGS__)" -DGDB_SUPPORT
+	CCFLAGS	+= -D_FILE_OFFSET_BITS=64 -D__USE_LARGEFILE64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
+	CCFLAGS	+= -DSUPPORT_DEBUG_PRINTF
+	CC		= gcc
+	SOURCES	+= cpu.c soc_pc.c main.c ds1287.c
 else
 	CCFLAGS	+= -O2 -g -ggdb3 -fvar-tracking -Wall -Wextra -Werror -D"err_str(...)=fprintf(stderr, __VA_ARGS__)" -DGDB_SUPPORT
 	CCFLAGS	+= -D_FILE_OFFSET_BITS=64 -D__USE_LARGEFILE64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
